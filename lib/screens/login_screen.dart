@@ -1,4 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -8,6 +13,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +40,55 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/images/image.png'),
+              const Spacer(),
+              SvgPicture.asset(
+                'assets/svgs/ic_instagram.svg',
+                color: primaryColor,
+                height: 64.0,
+              ),
+              const SizedBox(
+                height: 48.0,
+              ),
+              CustomTextField(
+                controller: _emailController,
+                hintText: 'Enter your email',
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              CustomTextField(
+                controller: _passwordController,
+                hintText: 'Enter your password',
+                keyboardType: TextInputType.visiblePassword,
+                isObscured: true,
+              ),
+              const SizedBox(
+                height: 24.0,
+              ),
+              Container(
+                child: const Text('Login'),
+                width: 150.0,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6.0),
+                    ),
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF7E38AF),
+                      Color(0xFFF70207),
+                      Color(0xFFF7C601),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 12.0,
+              ),
             ],
           ),
         ),
