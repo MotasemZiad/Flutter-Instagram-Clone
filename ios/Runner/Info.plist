@@ -28,6 +28,12 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We have the permission to pick an image from Gallery</string>	
+	<key>NSCameraUsageDescription</key>
+	<string>We have the permission to pick an image from Camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We have the permission to pick a video from Camera or Gallery</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

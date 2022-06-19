@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -16,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _bioController;
-
+  Uint8List? _image;
   @override
   void initState() {
     super.initState();
@@ -33,6 +37,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     super.dispose();
+  }
+
+  selectImage() async {
+    Uint8List image = await pickImage(context);
+    setState(() {
+      _image = image;
+    });
   }
 
   @override
@@ -56,17 +67,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 64.0,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1655374631048-1416d81cd20a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=498&q=80'),
-                  ),
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64.0,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 64.0,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6Q82WISxpWPp5dHBTWHypFOZbRTvc0ST0xQ&usqp=CAU'),
+                        ),
                   Positioned(
                     bottom: -10,
                     left: 80,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: selectImage,
                       icon: const Icon(
                         Icons.add_a_photo,
                       ),
@@ -111,7 +128,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 24.0,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  String res = await AuthMethods().registerUser(
+                    username: _usernameController.text,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    bio: _bioController.text,
+                  );
+                },
                 child: Container(
                   child: const Text(
                     'Register',
