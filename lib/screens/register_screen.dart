@@ -21,6 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController _passwordController;
   late TextEditingController _bioController;
   Uint8List? _image;
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +46,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _image = image;
     });
+  }
+
+  _registerUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().registerUser(
+      username: _usernameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      bio: _bioController.text,
+      image: _image,
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != 'Success') {
+      showSnackBar(context: context, content: res, backgroundColor: Colors.red);
+    }
   }
 
   @override
@@ -129,19 +153,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 24.0,
               ),
               InkWell(
-                onTap: () async {
-                  String res = await AuthMethods().registerUser(
-                    username: _usernameController.text,
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    bio: _bioController.text,
-                  );
-                },
+                onTap: _registerUser,
                 child: Container(
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text(
+                          'Register',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
                   width: 150.0,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),

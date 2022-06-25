@@ -33,3 +33,19 @@ pickImage(BuildContext context) async {
     }
   }
 }
+
+showSnackBar({
+  required BuildContext context,
+  required String content,
+  Color? backgroundColor,
+  int duration = 2500,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+      backgroundColor: backgroundColor,
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(milliseconds: duration),
+    ),
+  );
+}
