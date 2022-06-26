@@ -64,7 +64,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isLoading = false;
     });
-
+    _usernameController.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _bioController.clear();
     if (res != 'Success') {
       showSnackBar(context: context, content: res, backgroundColor: Colors.red);
     }
