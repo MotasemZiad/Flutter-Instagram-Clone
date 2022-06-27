@@ -23,8 +23,8 @@ class AuthMethods {
           password.isNotEmpty &&
           bio.isNotEmpty &&
           image != null) {
-        UserCredential credential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
+        UserCredential credential = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
 
         String imageUrl = await StorageMethods().uploadImage('profile', image);
 
