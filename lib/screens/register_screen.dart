@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  selectImage() async {
+  _selectImage() async {
     Uint8List image = await pickImage(context);
     setState(() {
       _image = image;
@@ -112,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     bottom: -10,
                     left: 80,
                     child: IconButton(
-                      onPressed: selectImage,
+                      onPressed: _selectImage,
                       icon: const Icon(
                         Icons.add_a_photo,
                       ),
@@ -161,9 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Container(
                   child: _isLoading
                       ? const Center(
-                          child: CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
+                          child: CircularProgressIndicator(color: primaryColor),
                         )
                       : const Text(
                           'Register',

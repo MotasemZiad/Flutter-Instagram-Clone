@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/screens/register_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -27,6 +30,27 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  _loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    setState(() {
+      _isLoading = false;
+      _emailController.clear();
+      _passwordController.clear();
+    });
+
+    if (res != 'Success') {
+      showSnackBar(context: context, content: res, backgroundColor: Colors.red);
+    }
   }
 
   @override
@@ -67,12 +91,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24.0,
               ),
               InkWell(
-                onTap: () {},
+                onTap: _loginUser,
                 child: Container(
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(color: primaryColor),
+                        )
+                      : const Text(
+                          'Login',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
                   width: 150.0,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
