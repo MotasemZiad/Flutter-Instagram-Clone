@@ -19,6 +19,26 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+  ErrorWidget.builder = (details) {
+    return Material(
+      child: Container(
+        color: Colors.red,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              details.exception.toString(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  };
   runApp(const MyApp());
 }
 
@@ -33,10 +53,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      // home: const ResponsiveLayoutScreen(
-      //   mobileLayoutScreen: MobileLayoutScreen(),
-      //   webLayoutScreen: WebLayoutScreen(),
-      // ),
       home: const LoginScreen(),
     );
   }

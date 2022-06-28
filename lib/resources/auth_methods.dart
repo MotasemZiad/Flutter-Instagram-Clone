@@ -1,12 +1,17 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String name = 'Ahmed',
+      email = 'ahmed@gmail.com',
+      biography = 'I learn so I exist';
 
   Future<String> registerUser({
     required String username,
@@ -37,7 +42,12 @@ class AuthMethods {
           'followers': [],
           'following': [],
         });
-
+        // 1. You can use log to print any useful information
+        log("User id: ${credential.user!.uid}\n Image URL: $imageUrl\n");
+        // 2. You still can use print but in the debug mode
+        if (kDebugMode) {
+          print("User Email: ${credential.user!.email}");
+        }
         res = 'Success';
       } else {
         res = 'Please fill fields';
