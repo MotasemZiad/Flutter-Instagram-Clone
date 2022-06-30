@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/mobile_layout_screen.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/web_layout_screen.dart';
 import 'package:instagram_clone/screens/register_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -50,6 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (res != 'Success') {
       showSnackBar(context: context, content: res, backgroundColor: Colors.red);
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayoutScreen(
+              mobileLayoutScreen: MobileLayoutScreen(),
+              webLayoutScreen: WebLayoutScreen(),),
+        ),
+      );
     }
   }
 

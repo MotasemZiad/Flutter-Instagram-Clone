@@ -2,7 +2,8 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:instagram_clone/models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
 
@@ -33,21 +34,28 @@ class AuthMethods {
 
         String imageUrl = await StorageMethods().uploadImage('profile', image);
 
-        await _firestore.collection('users').doc(credential.user!.uid).set({
-          'id': credential.user!.uid,
-          'username': username,
-          'email': email,
-          'bio': bio,
-          'image': imageUrl,
-          'followers': [],
-          'following': [],
-        });
+        User user = User(
+          id: credential.user!.uid,
+          username: username,
+          email: email,
+          bio: bio,
+          image: imageUrl,
+          followers: [],
+          following: [],
+        );
+
+        await _firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(user.toJson());
+
         // 1. You can use log to print any useful information
         log("User id: ${credential.user!.uid}\n Image URL: $imageUrl\n");
         // 2. You still can use print but in the debug mode
         if (kDebugMode) {
           print("User Email: ${credential.user!.email}");
         }
+
         res = 'Success';
       } else {
         res = 'Please fill fields';
@@ -91,5 +99,9 @@ class AuthMethods {
       res = error.toString();
     }
     return res;
+  }
+
+  Future<void> logout() async {
+    await _auth.signOut();
   }
 }
