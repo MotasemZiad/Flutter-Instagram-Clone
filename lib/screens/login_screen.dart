@@ -8,6 +8,7 @@ import 'package:instagram_clone/screens/register_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/custom_text_field.dart';
+import 'package:instagram_clone/widgets/primary_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -58,8 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayoutScreen(
-              mobileLayoutScreen: MobileLayoutScreen(),
-              webLayoutScreen: WebLayoutScreen(),),
+            mobileLayoutScreen: MobileLayoutScreen(),
+            webLayoutScreen: WebLayoutScreen(),
+          ),
         ),
       );
     }
@@ -102,36 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24.0,
               ),
-              InkWell(
+              PrimaryButton(
+                label: 'Login',
                 onTap: _loginUser,
-                child: Container(
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(color: primaryColor),
-                        )
-                      : const Text(
-                          'Login',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                  width: 150.0,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6.0),
-                      ),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF7E38AF),
-                        Color(0xFFF70207),
-                        Color(0xFFF7C601),
-                      ],
-                    ),
-                  ),
-                ),
+                isLoading: _isLoading,
               ),
               const SizedBox(
                 height: 12.0,
