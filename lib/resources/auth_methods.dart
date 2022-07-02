@@ -2,14 +2,22 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide User;
-import 'package:instagram_clone/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_clone/models/user.dart' as model;
 import 'package:flutter/foundation.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<model.User> getUserDetails() async {
+    User user = _auth.currentUser!;
+    DocumentSnapshot snapshot =
+        await _firestore.collection('users').doc(user.uid).get();
+
+    return model.User.fromMap(snapshot.data() as Map<String, dynamic>);
+  }
 
   Future<String> registerUser({
     required String username,
@@ -31,7 +39,7 @@ class AuthMethods {
 
         String imageUrl = await StorageMethods().uploadImage('profile', image);
 
-        User user = User(
+        model.User user = model.User(
           id: credential.user!.uid,
           username: username,
           email: email,
@@ -44,7 +52,7 @@ class AuthMethods {
         await _firestore
             .collection('users')
             .doc(credential.user!.uid)
-            .set(user.toJson());
+            .set(user.toMap());
 
         // 1. You can use log to print any useful information
         log("User id: ${credential.user!.uid}\n Image URL: $imageUrl\n");

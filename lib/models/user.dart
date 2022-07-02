@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   late final String id;
   late final String username;
@@ -17,17 +19,19 @@ class User {
     required this.following,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    username = json['username'];
-    email = json['email'];
-    bio = json['bio'];
-    image = json['image'];
-    followers = json['followers'];
-    following = json['following'];
+  factory User.fromMap(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      username: json['username'],
+      email: json['email'],
+      bio: json['bio'],
+      image: json['image'],
+      followers: json['followers'],
+      following: json['following'],
+    );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'username': username,
@@ -38,4 +42,9 @@ class User {
       'following': following,
     };
   }
+
+
+  String toJson() => json.encode(toMap());
+
+  factory User.fromJson(String source) => User.fromMap(json.decode(source));
 }
