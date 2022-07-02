@@ -10,9 +10,6 @@ import 'package:instagram_clone/resources/storage_methods.dart';
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String name = 'Ahmed',
-      email = 'ahmed@gmail.com',
-      biography = 'I learn so I exist';
 
   Future<String> registerUser({
     required String username,
